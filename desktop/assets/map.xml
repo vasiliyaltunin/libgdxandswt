@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<level id="level1" name="home">
+	<static>
+		<object type="wall" id="wall1" x="0" y="-3" w="15" h="1" angle="0" texture="assets\\null.png" />
+		<object type="wall" id="wall2" x="0" y="3" w="15" h="1" angle="0" texture="assets\\null.png" />
+		<object type="wall" id="wall3" x="3" y="0" w="15" h="1" angle="90" texture="assets\\null.png" />
+		<object type="wall" id="wall4" x="-3" y="0" w="15" h="1" angle="90" texture="assets\\null.png" />
+	</static>
+
+
+</level>
