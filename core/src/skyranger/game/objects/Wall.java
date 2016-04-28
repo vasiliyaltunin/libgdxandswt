@@ -38,6 +38,7 @@ public class Wall extends StaticObject {
 
 		this.body.getBodyDef().position.set(this.getPosition().x,
 				this.getPosition().y);
+//		this.body.getBodyDef().position.set(0,0);
 		this.getBodySprite().getBodyDef().type = BodyType.DynamicBody;
 		// top-down gravity simulation
 		this.getBodySprite().getBodyDef().linearDamping = 100f; // 0 no dumping
@@ -45,9 +46,12 @@ public class Wall extends StaticObject {
 		this.getBodySprite().getBodyDef().awake = true;
 
 		PolygonShape wallSphape = new PolygonShape();
-		wallSphape.setAsBox(this.getSize().x / 2, this.getSize().y / 2,
-				new Vector2(this.getPosition().x, this.getPosition().y),
-				this.getAngle() * MathUtils.degRad);
+		
+		wallSphape.setAsBox(this.getSize().x / 2, this.getSize().y / 2);
+				
+//		wallSphape.setAsBox(this.getSize().x / 2, this.getSize().y / 2,
+//				new Vector2(this.getPosition().x, this.getPosition().y),
+//				this.getAngle() * MathUtils.degRad);
 
 		// fixture def
 		this.getBodySprite().getFixDef().shape = wallSphape;
@@ -60,6 +64,9 @@ public class Wall extends StaticObject {
 															// jump at all
 
 		this.getBodySprite().createBody();
+
+		
+		this.body.getBody().setTransform(this.getPosition(),this.getAngle() * MathUtils.degRad);
 
 		this.getBodySprite().getBody()
 				.createFixture(this.getBodySprite().getFixDef());
