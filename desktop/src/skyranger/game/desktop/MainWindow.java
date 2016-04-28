@@ -204,7 +204,8 @@ public class MainWindow {
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SwtEvents.changeObjectLanguage("wall1", 90);
+				SwtEvents.changeObjectAngle("wall1", 90);
+				SwtEvents.changeObjectPosition("wall1", new Vector2(0f,-10f));
 			}
 		});
 		btnNewButton.setBounds(44, 204, 75, 25);

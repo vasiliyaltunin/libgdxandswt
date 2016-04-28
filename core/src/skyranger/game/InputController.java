@@ -54,6 +54,11 @@ public class InputController implements InputProcessor {
 				ObjectsManager.get(id).getBody().setTransform(ObjectsManager.get(id).getBody().getPosition(), angle*MathUtils.degreesToRadians);
 				
 			}
+
+			@Override
+			public void changeObjectPosition(String id, Vector2 position) {
+				ObjectsManager.get(id).getBody().setTransform(position, ObjectsManager.get(id).getBody().getAngle());
+			}
 		});
 	}
 

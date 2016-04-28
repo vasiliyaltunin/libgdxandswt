@@ -3,9 +3,9 @@
 <level id="level1" name="home">
 	<static>
 		<object type="wall" id="wall1" x="0" y="-6" w="5" h="1" angle="0" texture="assets\\null.png" />
-		<object type="wall" id="wall2" x="0" y="6" w="15" h="1" angle="0" texture="assets\\null.png" />
-		<object type="wall" id="wall3" x="6" y="0" w="15" h="1" angle="90" texture="assets\\null.png" />
-		<object type="wall" id="wall4" x="-6" y="0" w="15" h="1" angle="90" texture="assets\\null.png" />
+		<object type="wall" id="wall2" x="0" y="6" w="10" h="1" angle="0" texture="assets\\null.png" />
+		<object type="wall" id="wall3" x="6" y="0" w="10" h="1" angle="90" texture="assets\\null.png" />
+		<object type="wall" id="wall4" x="-6" y="0" w="10" h="1" angle="90" texture="assets\\null.png" />
 	</static>
 
 
