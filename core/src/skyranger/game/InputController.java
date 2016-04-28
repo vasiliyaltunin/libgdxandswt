@@ -17,9 +17,13 @@
 package skyranger.game;
 
 import skyranger.game.bridge.GameMouseEvent;
+import skyranger.game.bridge.ISwtEvents;
+import skyranger.game.bridge.SwtEvents;
+import skyranger.game.objects.ObjectsManager;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -39,6 +43,18 @@ public class InputController implements InputProcessor {
 		screen = playScreen;
 
 		callback = new ClickCallback(lastClick, hitBody);
+		
+		
+		SwtEvents.addListener(new ISwtEvents() {
+			
+
+			@Override
+			public void objectAngeChanged(String id, float angle) {
+				//angle=angle+5;
+				ObjectsManager.get(id).getBody().setTransform(ObjectsManager.get(id).getBody().getPosition(), angle*MathUtils.degreesToRadians);
+				
+			}
+		});
 	}
 
 	@Override

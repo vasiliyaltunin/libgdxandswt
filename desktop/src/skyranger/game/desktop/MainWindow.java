@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import skyranger.game.MainGameClass;
 import skyranger.game.bridge.GameMouseEvent;
 import skyranger.game.bridge.IGameMouseListener;
+import skyranger.game.bridge.SwtEvents;
 import skyranger.game.objects.IBox2dObject;
 
 import com.badlogic.gdx.math.Vector2;
@@ -198,6 +199,16 @@ public class MainWindow {
 		Label lblH = new Label(shell, SWT.NONE);
 		lblH.setText("H");
 		lblH.setBounds(10, 153, 27, 15);
+		
+		Button btnNewButton = new Button(shell, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				SwtEvents.changeObjectLanguage("wall1", 90);
+			}
+		});
+		btnNewButton.setBounds(44, 204, 75, 25);
+		btnNewButton.setText("New Button");
 
 		GameMouseEvent
 				.addListener(new IGameMouseListener() {

@@ -100,4 +100,5 @@ public class StaticObject implements IBox2dObject {
 	public void setFixture(Fixture fixture) {
 		this.fixture = fixture;
 	}
+	
 }
