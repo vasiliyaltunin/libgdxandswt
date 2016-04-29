@@ -41,47 +41,43 @@ public class StaticObject implements IBox2dObject {
 		this.id = id;
 		this.position = position;
 		this.size = size;
-		this.angle = angle;
+		this.setAngle(angle);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see skyranger.game.objects.Box2dObject#getId()
-	 */
 	@Override
 	public String getId() {
 		return id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see skyranger.game.objects.Box2dObject#getPosition()
-	 */
-	@Override
-	public Vector2 getPosition() {
-		return position;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see skyranger.game.objects.Box2dObject#getSize()
-	 */
 	@Override
 	public Vector2 getSize() {
 		return size;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see skyranger.game.objects.Box2dObject#getAngle()
-	 */
+	@Override
+	public void setSize(Vector2 size) {
+		this.size=size;
+	}
+	
+	@Override
+	public Vector2 getPosition() {
+		return position;
+	}
+
+	@Override
+	public void setPosition(Vector2 pos) {
+		this.position=pos;
+	}
+
+	
 	@Override
 	public float getAngle() {
 		return angle;
+	}
+
+	@Override
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
 
 	public BodySprite getBodySprite() {
@@ -99,6 +95,18 @@ public class StaticObject implements IBox2dObject {
 
 	public void setFixture(Fixture fixture) {
 		this.fixture = fixture;
+	}
+
+	@Override
+	public void recreateObject() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void recreateBodyObject() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

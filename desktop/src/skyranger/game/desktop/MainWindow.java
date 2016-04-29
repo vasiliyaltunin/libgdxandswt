@@ -204,12 +204,13 @@ public class MainWindow {
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				SwtEvents.changeObjectAngle("wall1", 90);
-				SwtEvents.changeObjectPosition("wall1", new Vector2(0f,-10f));
+				SwtEvents.changeObjectAngle(id.getText(), Float.valueOf(ang.getText()));
+				SwtEvents.changeObjectPosition(id.getText(), new Vector2(Float.valueOf(x.getText()),Float.valueOf(y.getText())));
+				SwtEvents.changeObjectSize(id.getText(), new Vector2(Float.valueOf(w.getText()),Float.valueOf(h.getText())));
 			}
 		});
 		btnNewButton.setBounds(44, 204, 75, 25);
-		btnNewButton.setText("New Button");
+		btnNewButton.setText("Apply");
 
 		GameMouseEvent
 				.addListener(new IGameMouseListener() {

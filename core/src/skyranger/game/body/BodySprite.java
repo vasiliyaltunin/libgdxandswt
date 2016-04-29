@@ -72,7 +72,7 @@ public class BodySprite {
 		this.bodySprite.setOrigin(this.bodySprite.getWidth() / 2,
 				this.bodySprite.getHeight() / 2);
 		this.bodySprite.setOriginCenter();
-
+		
 	}
 
 	public Body getBody() {

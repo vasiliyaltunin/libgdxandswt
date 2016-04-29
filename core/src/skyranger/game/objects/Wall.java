@@ -18,6 +18,7 @@ package skyranger.game.objects;
 
 import skyranger.game.body.BodySprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -27,14 +28,36 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Wall extends StaticObject {
 
+	private World world;
+	private SpriteBatch batch; 
+	private String fileName; 
+	
+	
 	public Wall(String id, Vector2 position, Vector2 size, float angle) {
 		super(id, position, size, angle);
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void recreateBodyObject() {	
+		
+		Gdx.app.postRunnable(new Runnable() {
+	         @Override
+	         public void run() {
+	        	 world.destroyBody(body.getBody());
+	        	 createBodyObject(world, batch, fileName);
+	         }
+	});
+		
+	}
+	
 	public void createBodyObject(World world, SpriteBatch batch, String fileName) {
 
-		this.body = new BodySprite(world, batch, fileName);
+		this.world=world;
+		this.batch=batch;
+		this.fileName=fileName;
+				
+		this.body = new BodySprite(this.world, this.batch, this.fileName);
 
 		this.body.getBodyDef().position.set(this.getPosition().x,
 				this.getPosition().y);
@@ -45,6 +68,7 @@ public class Wall extends StaticObject {
 		this.getBodySprite().getBodyDef().angularDamping = 100f;
 		this.getBodySprite().getBodyDef().awake = true;
 
+				
 		PolygonShape wallSphape = new PolygonShape();
 		
 		wallSphape.setAsBox(this.getSize().x / 2, this.getSize().y / 2);

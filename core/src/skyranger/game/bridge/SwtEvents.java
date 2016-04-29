@@ -41,5 +41,16 @@ public class SwtEvents {
 		
 	}
 
+	// position of object changed
+	private static void fireObjectSize(String id, Vector2 size) {
+		for (ISwtEvents listener : listeners) {
+			listener.changeObjectSize(id, size);
+		}
+	}
+		
+	public static void changeObjectSize(String id, Vector2 size) {
+		fireObjectSize(id, size);		
+	}
+
 	
 }

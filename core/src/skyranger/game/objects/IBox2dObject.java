@@ -26,13 +26,24 @@ public interface IBox2dObject {
 
 	public abstract Vector2 getPosition();
 
+	public abstract void setPosition(Vector2 pos);
+	
 	public abstract Vector2 getSize();
+
+	public abstract void setSize(Vector2 size);
 
 	public abstract float getAngle();
 
+	public void setAngle(float angle);
+	
 	public abstract Body getBody();
 
 	public Fixture getFixture();
 
 	public void setFixture(Fixture fixture);
+
+	public void recreateObject();
+
+	public abstract void recreateBodyObject();
+	
 }
