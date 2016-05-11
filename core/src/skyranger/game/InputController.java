@@ -42,7 +42,7 @@ public class InputController implements InputProcessor {
 	public InputController(PlayScreen playScreen) {
 		screen = playScreen;
 
-		callback = new ClickCallback(lastClick, hitBody);
+		callback = new ClickCallback(lastClick, hitBody,playScreen);
 		
 		
 		SwtEvents.addListener(new ISwtEvents() {

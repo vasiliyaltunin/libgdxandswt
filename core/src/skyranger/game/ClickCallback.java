@@ -29,11 +29,13 @@ public class ClickCallback implements QueryCallback {
 
 	private Vector3 lastClick;
 	private Body hitBody;
+	private PlayScreen playScreen;
 
-	public ClickCallback(Vector3 lastClick, Body hitBody) {
+	public ClickCallback(Vector3 lastClick, Body hitBody, PlayScreen playScreen) {
 		super();
 		this.lastClick = lastClick;
 		this.hitBody = hitBody;
+		this.playScreen=playScreen;
 	}
 
 	@Override
@@ -45,6 +47,7 @@ public class ClickCallback implements QueryCallback {
 				if (fixture.getBody() == obj.getBody()) {
 					obj.setFixture(fixture);
 					GameMouseEvent.mouseClickOnObject(obj);
+					playScreen.setSelectedObjId(obj.getId()); 
 				}
 			}
 

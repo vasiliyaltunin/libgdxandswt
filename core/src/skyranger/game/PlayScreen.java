@@ -23,6 +23,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 
 import skyranger.game.bridge.GameMouseEvent;
+import skyranger.game.draw.DrawPrimitives;
 import skyranger.game.objects.IBox2dObject;
 import skyranger.game.objects.ObjectsManager;
 import skyranger.game.objects.Wall;
@@ -32,6 +33,7 @@ import skyranger.game.xml.XmlParser;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -69,6 +71,8 @@ public class PlayScreen implements Screen {
 	public boolean isDebug = true;
 
 	public GameMouseEvent mouseMove = new GameMouseEvent();
+	
+	private String selectedObjId="";
 
 	@Override
 	public void render(float delta) {
@@ -91,13 +95,22 @@ public class PlayScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		player.draw(batch);
+		player.draw(batch, camera);
 		cursor.draw(camera, player);
 		for (IBox2dObject obj : ObjectsManager.getObjects().values()) {
-			((Wall) obj).getBodySprite().draw(batch);
+			((Wall) obj).getBodySprite().draw(batch,camera);
 		}
 
+		//DrawLine.DrawDebugLine(new Vector2(0,0), new Vector2(1f,1f), 2, new Color(Color.ORANGE),camera.combined);
+		
 		batch.end();
+
+		if ((this.getSelectedObjId())!="")
+		{
+			IBox2dObject obj = ObjectsManager.get(this.getSelectedObjId());
+			DrawPrimitives.DrawBox(obj.getBody().getPosition(),obj.getSize(), 
+					2f, new Color(Color.ORANGE),camera.combined,obj.getAngle());
+		}
 
 		if (Mouse.isInsideWindow()) {
 			try {
@@ -195,6 +208,14 @@ public class PlayScreen implements Screen {
 
 	public World getWorld() {
 		return world;
+	}
+
+	public String getSelectedObjId() {
+		return selectedObjId;
+	}
+
+	public void setSelectedObjId(String selectedObjId) {
+		this.selectedObjId = selectedObjId;
 	}
 
 }

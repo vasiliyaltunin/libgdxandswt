@@ -16,6 +16,12 @@
 
 package skyranger.game.body;
 
+import org.lwjgl.util.ReadableColor;
+
+import skyranger.game.draw.DrawPrimitives;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -79,7 +85,8 @@ public class BodySprite {
 		return this.body;
 	}
 
-	public void draw(Batch batch) {
+	public void draw(Batch batch, Camera camera ) {
+
 		this.bodySprite.setPosition(
 				this.body.getPosition().x - this.bodySprite.getWidth() / 2,
 				this.body.getPosition().y - this.bodySprite.getHeight() / 2);
@@ -87,6 +94,7 @@ public class BodySprite {
 				.setRotation((this.body.getAngle() * MathUtils.radiansToDegrees)
 						- getAngleDelta());
 		this.bodySprite.draw(this.batch);
+
 	}
 
 	public void createBody() {

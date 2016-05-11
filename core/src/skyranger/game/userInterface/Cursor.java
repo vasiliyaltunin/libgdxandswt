@@ -84,7 +84,7 @@ public class Cursor extends BodySprite {
 	}
 
 	public void draw(Camera camera, Player player) {
-		super.draw(this.getBatch());
+		super.draw(this.getBatch(),camera);
 
 		this.mousePosition = this.getMousePosition();
 
