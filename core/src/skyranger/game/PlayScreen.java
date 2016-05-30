@@ -37,6 +37,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -95,21 +96,18 @@ public class PlayScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		player.draw(batch, camera);
-		cursor.draw(camera, player);
-		for (IBox2dObject obj : ObjectsManager.getObjects().values()) {
-			((Wall) obj).getBodySprite().draw(batch,camera);
-		}
-
-		//DrawLine.DrawDebugLine(new Vector2(0,0), new Vector2(1f,1f), 2, new Color(Color.ORANGE),camera.combined);
-		
+			for (IBox2dObject obj : ObjectsManager.getObjects().values()) {
+				((Wall) obj).getBodySprite().draw(batch,camera);
+			}
+			player.draw(batch, camera);
+			cursor.draw(camera, player);
 		batch.end();
 
 		if ((this.getSelectedObjId())!="")
 		{
 			IBox2dObject obj = ObjectsManager.get(this.getSelectedObjId());
 			DrawPrimitives.DrawBox(obj.getBody().getPosition(),obj.getSize(), 
-					2f, new Color(Color.ORANGE),camera.combined,obj.getAngle());
+					2f, new Color(Color.ORANGE),camera.combined,obj.getBody().getAngle()*MathUtils.radiansToDegrees);
 		}
 
 		if (Mouse.isInsideWindow()) {

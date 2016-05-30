@@ -53,12 +53,22 @@ public class BodySprite {
 
 	private float angleDelta = 0;
 
+	private String fileName;
+
 	public BodySprite(World world, SpriteBatch batch) {
 		this.create(world, batch, "assets\\null.png");
 	}
 
 	public BodySprite(World world, SpriteBatch batch, String fileName) {
+		this.size = new Vector2(1f, 1f);
 		this.create(world, batch, fileName);
+		applyTexture();
+	}
+
+	public BodySprite(World world, SpriteBatch batch, String fileName,Vector2 size) {
+		this.size = size;
+		this.create(world, batch, fileName);
+		applyTexture();
 	}
 
 	public void create(World world, SpriteBatch batch, String fileName) {
@@ -68,9 +78,12 @@ public class BodySprite {
 		this.world = world;
 		this.batch = batch;
 
-		this.size = new Vector2(1f, 1f);
+		this.fileName = fileName;
+	}
 
-		Texture tmpTex = new Texture(fileName);
+	private void applyTexture()
+	{
+		Texture tmpTex = new Texture(this.fileName);
 		tmpTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this.bodySprite = new Sprite(tmpTex);
 		// this.bodySprite.setSize(1f,1f);
@@ -78,9 +91,8 @@ public class BodySprite {
 		this.bodySprite.setOrigin(this.bodySprite.getWidth() / 2,
 				this.bodySprite.getHeight() / 2);
 		this.bodySprite.setOriginCenter();
-		
 	}
-
+	
 	public Body getBody() {
 		return this.body;
 	}

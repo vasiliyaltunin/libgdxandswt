@@ -16,9 +16,12 @@
 
 package skyranger.game;
 
+import org.lwjgl.Sys;
+
 import skyranger.game.bridge.GameMouseEvent;
 import skyranger.game.bridge.ISwtEvents;
 import skyranger.game.bridge.SwtEvents;
+import skyranger.game.objects.IBox2dObject;
 import skyranger.game.objects.ObjectsManager;
 
 import com.badlogic.gdx.Input.Keys;
@@ -33,42 +36,57 @@ public class InputController implements InputProcessor {
 
 	private PlayScreen screen;
 
-	private QueryCallback callback;
+	private ClickCallback clickCallback;
 
 	private Vector3 lastClick = new Vector3();
 
 	private Body hitBody;
 
-	public InputController(PlayScreen playScreen) {
-		screen = playScreen;
+	private boolean isLeftShift = false;
+	
+	private Body selectedObject = null;
 
-		callback = new ClickCallback(lastClick, hitBody,playScreen);
-		
-		
+	private Vector3 prevDragPos = new Vector3();
+
+	// We init all we need and add listeners
+	public InputController(PlayScreen playScreen) {
+		this.screen = playScreen;
+
+		this.clickCallback = new ClickCallback(this.lastClick, this.hitBody, playScreen);
+
 		SwtEvents.addListener(new ISwtEvents() {
-			
 
 			@Override
 			public void objectAngeChanged(String id, float angle) {
-				//angle=angle+5;
+				// angle=angle+5;
 				ObjectsManager.get(id).setAngle(angle);
-				ObjectsManager.get(id).getBody().setTransform(ObjectsManager.get(id).getBody().getPosition(), angle*MathUtils.degreesToRadians);
+				ObjectsManager
+						.get(id)
+						.getBody()
+						.setTransform(
+								ObjectsManager.get(id).getBody().getPosition(),
+								angle * MathUtils.degreesToRadians);
 			}
 
 			@Override
 			public void changeObjectPosition(String id, Vector2 position) {
 				ObjectsManager.get(id).setPosition(position);
-				ObjectsManager.get(id).getBody().setTransform(position, ObjectsManager.get(id).getBody().getAngle());
+				ObjectsManager
+						.get(id)
+						.getBody()
+						.setTransform(position,
+								ObjectsManager.get(id).getBody().getAngle());
 			}
 
 			@Override
 			public void changeObjectSize(String id, Vector2 size) {
-				ObjectsManager.get(id).setSize(size);				
-				ObjectsManager.get(id).recreateBodyObject();				
+				ObjectsManager.get(id).setSize(size);
+				ObjectsManager.get(id).recreateBodyObject();
 			}
 		});
 	}
 
+	// Manage all key down events
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
@@ -84,13 +102,16 @@ public class InputController implements InputProcessor {
 		case Keys.D:
 			this.screen.movement.x = this.screen.speed;
 			break;
-
+		case Keys.SHIFT_LEFT:
+			this.isLeftShift = true;
+			break;
 		default:
 			break;
 		}
 		return true;
 	}
 
+	// Manage all key up events
 	@Override
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
@@ -109,6 +130,9 @@ public class InputController implements InputProcessor {
 		case Keys.F12:
 			this.screen.isDebug = !this.screen.isDebug;
 			break;
+		case Keys.SHIFT_LEFT:
+			this.isLeftShift = false;
+			break;
 		}
 		return true;
 	}
@@ -119,6 +143,7 @@ public class InputController implements InputProcessor {
 		return false;
 	}
 
+	// Manage all mouse clicks
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// left
@@ -129,10 +154,18 @@ public class InputController implements InputProcessor {
 			lastClick.y = screenY - 0.1f;
 			this.screen.camera.unproject(lastClick);
 
-			hitBody = null;
+			//if it just left click on object we run check if any object under click area
+			if (!this.isLeftShift)
+			{			
+				hitBody = null;
 
-			this.screen.getWorld().QueryAABB(callback, lastClick.x,
-					lastClick.y, lastClick.x, lastClick.y);
+				this.screen.getWorld().QueryAABB(clickCallback, lastClick.x,
+						lastClick.y, lastClick.x, lastClick.y);
+			}
+			else
+			{
+				System.out.println(lastClick);
+			}
 		}
 		// middle
 		if (button == 2) {
@@ -147,15 +180,19 @@ public class InputController implements InputProcessor {
 		return true;
 	}
 
+	// Manage all mouse button up events
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		this.screen.mouseLook = false;
 		GameMouseEvent.mouseReleased();
+		prevDragPos = new Vector3();
 		return true;
 	}
 
+	// Manage all mouse drag events
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		//if right mouse button pressed we act as mouse look
 		if (this.screen.mouseLook) {
 			Vector3 cameraV3 = this.screen.camera.unproject(new Vector3(
 					screenX, screenY, 0));
@@ -173,10 +210,40 @@ public class InputController implements InputProcessor {
 					newCamVector.angleRad());
 
 		}
-		// TODO Auto-generated method stub
+
+		//if left shift pressed and RMB not pressed and we do some mouse drag we move selected object
+		if ((this.isLeftShift) && (!this.screen.mouseLook) && (prevDragPos.x>0) && (prevDragPos.y>0))
+		{
+			
+			Vector3 dragPos = new Vector3(screenX, screenY,0);  
+			
+			this.screen.camera.unproject(dragPos);
+			this.screen.camera.unproject(prevDragPos);
+
+			Vector3 delta = new Vector3(dragPos.x-prevDragPos.x,dragPos.y-prevDragPos.y,0);
+			
+			IBox2dObject obj = this.clickCallback.getObject();
+			
+			Vector2 objPos = obj.getPosition();
+			
+			Vector3 newpos = new Vector3(objPos.x+delta.x,objPos.y+delta.y,0);
+						
+			SwtEvents.changeObjectPosition(obj.getId(), new Vector2(newpos.x,newpos.y));
+			
+			this.clickCallback.getObject().setAngle(this.clickCallback.getObject().getBody().getAngle()*MathUtils.radiansToDegrees);
+
+			GameMouseEvent.mouseClickOnObject(obj);
+			
+			GameMouseEvent.mouseMoved(new Vector2(screenX, screenY));
+			
+		}
+
+		prevDragPos  = new Vector3(screenX, screenY,0);
+		
 		return false;
 	}
 
+	// Manage mouse move event
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 
@@ -185,10 +252,20 @@ public class InputController implements InputProcessor {
 		return true;
 	}
 
+	// Manage mouse scroll event
 	@Override
 	public boolean scrolled(int amount) {
-		this.screen.mouseMove.mouseWheelMoved(amount);
-		this.screen.camera.zoom += amount / 25f;
+		if (!this.isLeftShift) {
+			this.screen.mouseMove.mouseWheelMoved(amount);
+			this.screen.camera.zoom += amount / 25f;
+			return true;
+		}
+		else
+		{
+			this.clickCallback.getObject().setAngle(this.clickCallback.getObject().getBody().getAngle()*MathUtils.radiansToDegrees);
+			SwtEvents.changeObjectAngle(this.clickCallback.getObject().getId(), this.clickCallback.getObject().getAngle()+amount);
+			GameMouseEvent.mouseClickOnObject(this.clickCallback.getObject());
+		}
 		return true;
 	}
 

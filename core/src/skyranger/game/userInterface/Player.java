@@ -17,6 +17,7 @@
 package skyranger.game.userInterface;
 
 import skyranger.game.body.BodySprite;
+import skyranger.game.objects.BasicObject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -25,6 +26,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends BodySprite {
+
+	private static final short PLAYER_MASK = -1;
 
 	public Player(World world, SpriteBatch batch, String fileName) {
 		super(world, batch, fileName);
@@ -50,6 +53,10 @@ public class Player extends BodySprite {
 		this.getFixDef().restitution = 0.9f; // elastivness jump up 1 - jump
 												// forever / 0 - not jump at all
 
+		//we need that player interact with all objects
+		this.getFixDef().filter.categoryBits = BasicObject.PLAYER_OBJECT;
+		this.getFixDef().filter.maskBits = Player.PLAYER_MASK;
+		
 		createBody();
 		this.getBody().createFixture(getFixDef());
 

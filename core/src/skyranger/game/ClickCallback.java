@@ -20,6 +20,7 @@ import skyranger.game.bridge.GameMouseEvent;
 import skyranger.game.objects.IBox2dObject;
 import skyranger.game.objects.ObjectsManager;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -30,6 +31,8 @@ public class ClickCallback implements QueryCallback {
 	private Vector3 lastClick;
 	private Body hitBody;
 	private PlayScreen playScreen;
+	private String hitId;
+	private IBox2dObject clickedObject;
 
 	public ClickCallback(Vector3 lastClick, Body hitBody, PlayScreen playScreen) {
 		super();
@@ -47,7 +50,11 @@ public class ClickCallback implements QueryCallback {
 				if (fixture.getBody() == obj.getBody()) {
 					obj.setFixture(fixture);
 					GameMouseEvent.mouseClickOnObject(obj);
-					playScreen.setSelectedObjId(obj.getId()); 
+					playScreen.setSelectedObjId(obj.getId());
+					this.hitId=obj.getId();
+					this.clickedObject = obj; 
+					this.clickedObject.setAngle(this.clickedObject.getBody().getAngle()*MathUtils.radiansToDegrees);
+
 				}
 			}
 
@@ -73,6 +80,16 @@ public class ClickCallback implements QueryCallback {
 
 	public void setHitBody(Body hitBody) {
 		this.hitBody = hitBody;
+	}
+	
+	public String getHitId()
+	{
+		return this.hitId;
+	}
+	
+	public IBox2dObject getObject()
+	{
+		return this.clickedObject;
 	}
 
 }

@@ -26,12 +26,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Wall extends StaticObject {
+public class Wall extends BasicObject {
 
 	private World world;
 	private SpriteBatch batch; 
 	private String fileName; 
 	
+	private final short WALL_MASK = PLAYER_OBJECT;
 	
 	public Wall(String id, Vector2 position, Vector2 size, float angle) {
 		super(id, position, size, angle);
@@ -57,8 +58,10 @@ public class Wall extends StaticObject {
 		this.batch=batch;
 		this.fileName=fileName;
 				
-		this.body = new BodySprite(this.world, this.batch, this.fileName);
+		this.body = new BodySprite(this.world, this.batch, this.fileName,this.getSize());
 
+		
+		
 		this.body.getBodyDef().position.set(this.getPosition().x,
 				this.getPosition().y);
 //		this.body.getBodyDef().position.set(0,0);
@@ -87,6 +90,9 @@ public class Wall extends StaticObject {
 															// forever / 0 - not
 															// jump at all
 
+		//we need that walls only interact with player
+		this.getBodySprite().getFixDef().filter.categoryBits = BasicObject.STATIC_OBJECT;
+		this.getBodySprite().getFixDef().filter.maskBits = this.WALL_MASK;
 		this.getBodySprite().createBody();
 
 		

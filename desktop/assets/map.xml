@@ -2,10 +2,14 @@
 
 <level id="level1" name="home">
 	<static>
-		<object type="wall" id="wall1" x="0" y="-6" w="5" h="1" angle="0" texture="assets\\null.png" />
-		<object type="wall" id="wall2" x="0" y="6" w="10" h="1" angle="0" texture="assets\\null.png" />
-		<object type="wall" id="wall3" x="6" y="0" w="10" h="1" angle="90" texture="assets\\null.png" />
-		<object type="wall" id="wall4" x="-6" y="0" w="10" h="1" angle="90" texture="assets\\null.png" />
+		<object type="wall" id="wall1" x="-0.5" y="-5.5" w="10" h="1" angle="0" texture="assets\\wall.png" />
+		<object type="wall" id="wall2" x="-0.5" y="5.5" w="10" h="1" angle="0" texture="assets\\wall.png" />
+		<object type="wall" id="wall3" x="5" y="0" w="10" h="1" angle="90" texture="assets\\wall.png" />
+		<object type="wall" id="wall4" x="-6" y="0" w="10" h="1" angle="90" texture="assets\\wall.png" />
+		<object type="wall" id="wall_crn_1" x="-6" y="-5.5" w="1" h="1" angle="90" texture="assets\\wall_crn.png" />
+		<object type="wall" id="wall_crn_2" x="-6" y="5.5" w="1" h="1" angle="0" texture="assets\\wall_crn.png" />
+		<object type="wall" id="wall_crn_3" x="5" y="5.5" w="1" h="1" angle="270" texture="assets\\wall_crn.png" />
+		<object type="wall" id="wall_crn_4" x="5" y="-5.5" w="1" h="1" angle="180" texture="assets\\wall_crn.png" />
 	</static>
 
 
